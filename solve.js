@@ -143,9 +143,6 @@ function disintegrate(equation, left, right, replaceString){
 }
 
 
-var equation = "10*100/5+5";
-findBracketsAndSolve(equation); 
-
 function findBracketsAndSolve(equation){
 	var leftBracket, rightBracket, bracketCount;
 	var eqLength, iterate;
@@ -188,5 +185,13 @@ function findBracketsAndSolve(equation){
 	}
 
 	equation = solveEquation(equation);
-	console.log("final solution is ", equation);	
+
+	return equation;
 }
+
+
+//actual calling of the functions;
+var equation = "100/(100/5)/5";
+equation = findBracketsAndSolve(equation); 
+
+console.log("final equation is ", equation);
