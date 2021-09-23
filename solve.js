@@ -6,7 +6,6 @@ solveEquation = (equation) => {
 	//for /////////
 	while(i < eqLength){
 		if(equation[i] == '/'){
-			// console.log("found /");
 			pivot = i;
 			position = i;
 			pivot++;
@@ -27,10 +26,8 @@ solveEquation = (equation) => {
 			leftNum = Number(equation.substring(position, left+1));
 			rightNum = Number(equation.substring(position+1, right));
 
-			// console.log([leftNum, rightNum]);
 
 			equation = disintegrate(equation, ++left, right, leftNum/rightNum)
-			// console.log(equation);
 			i = 0;
 		}
 		i++;
@@ -39,7 +36,6 @@ solveEquation = (equation) => {
 	i = 0;
 	while(i < eqLength){
 		if(equation[i] == '*'){
-			// console.log("found *");
 			pivot = i;
 			position = i;
 			pivot++;
@@ -60,10 +56,8 @@ solveEquation = (equation) => {
 			leftNum = Number(equation.substring(position, left+1));
 			rightNum = Number(equation.substring(position+1, right));
 
-			// console.log([leftNum, rightNum]);
 
 			equation = disintegrate(equation, ++left, right, leftNum*rightNum)
-			// console.log(equation);
 			i = 0;
 		}
 		i++;
@@ -73,7 +67,6 @@ solveEquation = (equation) => {
 		i = 0;
 	while(i < eqLength){ 
 		if(equation[i] == '+'){
-			// console.log("found +");
 			pivot = i;
 			position = i;
 			pivot++;
@@ -94,10 +87,7 @@ solveEquation = (equation) => {
 			leftNum = Number(equation.substring(position, left+1));
 			rightNum = Number(equation.substring(position+1, right));
 
-			// console.log([leftNum, rightNum]);
-
 			equation = disintegrate(equation, ++left, right, leftNum+rightNum)
-			// console.log(equation);
 			i = 0;
 		}
 		i++;
@@ -106,7 +96,6 @@ solveEquation = (equation) => {
 		i = 0;
 	while(i < eqLength){
 		if(equation[i] == '-'){
-			// console.log("found -");
 			pivot = i;
 			position = i;
 			pivot++;
@@ -127,10 +116,8 @@ solveEquation = (equation) => {
 			leftNum = Number(equation.substring(position, left+1));
 			rightNum = Number(equation.substring(position+1, right));
 
-			// console.log([leftNum, rightNum]);
 
 			equation = disintegrate(equation, ++left, right, leftNum-rightNum)
-			// console.log(equation);
 			i = 0;
 		}
 		i++;
@@ -156,7 +143,50 @@ function disintegrate(equation, left, right, replaceString){
 }
 
 
-var equation = "10*100/10*5/5";
-var equation = solveEquation(equation);
+var equation = "10*100/5+5";
+findBracketsAndSolve(equation); 
+
+function findBracketsAndSolve(equation){
+	var leftBracket, rightBracket, bracketCount;
+	var eqLength, iterate;
+	var slicedEquation, solved;
+
+	//get the number of () in a given equation;
+	eqLength = equation.length;
+	iterate = 0;
+	bracketCount = 0;
+	while(iterate < eqLength){
+		if(equation[iterate] == '('){
+			bracketCount++;
+		}
+		iterate++;
+	}
+
+	while(bracketCount > 0){
+		//get the innermost () in the equation;
+		iterate = 0;
+		while(iterate < eqLength){
+			if(equation[iterate] == '('){
+				leftBracket = iterate;
+			}
+			iterate++;
+		}
+
+		iterate = leftBracket;
+		while((equation[iterate] != ')') && (iterate < eqLength)){
+			iterate++;
+		}
+		rightBracket = iterate;
 
 
+		slicedEquation = equation.slice(leftBracket+1, rightBracket);
+		solved = solveEquation(slicedEquation);
+
+
+		equation = disintegrate(equation, leftBracket, rightBracket+1, solved);
+		bracketCount--;
+	}
+
+	equation = solveEquation(equation);
+	console.log("final solution is ", equation);	
+}
