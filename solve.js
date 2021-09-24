@@ -1,3 +1,7 @@
+/*
+			
+
+*/
 solveEquation = (equation) => {
 	var eqLength = equation.length;
 	var i = 0;
